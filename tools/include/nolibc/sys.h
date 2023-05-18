@@ -671,7 +671,26 @@ int link(const char *old, const char *new)
 static __attribute__((unused))
 off_t sys_lseek(int fd, off_t offset, int whence)
 {
+#ifdef __NR_lseek
 	return my_syscall3(__NR_lseek, fd, offset, whence);
+#elif defined(__NR_llseek)
+	loff_t res;
+	off_t retval;
+
+	int rc = my_syscall5(__NR_llseek, fd, (long) (((uint64_t) (offset)) >> 32), (long) offset, &res, whence);
+
+	if (rc)
+		return rc;
+
+	retval = (off_t) res;
+	if (retval == res)
+		return retval;
+
+	SET_ERRNO(EOVERFLOW);
+	return (off_t) -1;
+#else
+#error Neither __NR_lseek nor __NR_llseek defined, cannot implement sys_lseek()
+#endif
 }
 
 static __attribute__((unused))
