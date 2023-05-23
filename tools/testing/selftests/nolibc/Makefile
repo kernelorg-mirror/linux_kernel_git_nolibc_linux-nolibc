@@ -76,11 +76,20 @@ else
 Q=@
 endif
 
+CFLAGS_STACKPROTECTOR = $(call cc-option,-mstack-protector-guard=global) \
+			$(call cc-option,-fstack-protector-all)
+CFLAGS_STKP_i386 = $(CFLAGS_STACKPROTECTOR)
+CFLAGS_STKP_x86_64 = $(CFLAGS_STACKPROTECTOR)
+CFLAGS_STKP_x86 = $(CFLAGS_STACKPROTECTOR)
+CFLAGS_STKP_arm64 = $(CFLAGS_STACKPROTECTOR)
+CFLAGS_STKP_arm = $(CFLAGS_STACKPROTECTOR)
+CFLAGS_STKP_mips = $(CFLAGS_STACKPROTECTOR)
+CFLAGS_STKP_riscv = $(CFLAGS_STACKPROTECTOR)
+CFLAGS_STKP_loongarch = $(CFLAGS_STACKPROTECTOR)
 CFLAGS_s390 = -m64
 CFLAGS  ?= -Os -fno-ident -fno-asynchronous-unwind-tables -std=c89 \
 		$(call cc-option,-fno-stack-protector) \
-		$(call cc-option,-mstack-protector-guard=global $(call cc-option,-fstack-protector-all)) \
-		$(CFLAGS_$(ARCH))
+		$(CFLAGS_STKP_$(ARCH)) $(CFLAGS_$(ARCH))
 LDFLAGS := -s
 
 help:
