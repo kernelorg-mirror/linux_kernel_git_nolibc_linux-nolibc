@@ -1195,19 +1195,22 @@ int sys_stat(const char *path, struct stat *buf)
 #else
 #error Neither __NR_newfstatat nor __NR_stat defined, cannot implement sys_stat()
 #endif
-	buf->st_dev     = stat.st_dev;
-	buf->st_ino     = stat.st_ino;
-	buf->st_mode    = stat.st_mode;
-	buf->st_nlink   = stat.st_nlink;
-	buf->st_uid     = stat.st_uid;
-	buf->st_gid     = stat.st_gid;
-	buf->st_rdev    = stat.st_rdev;
-	buf->st_size    = stat.st_size;
-	buf->st_blksize = stat.st_blksize;
-	buf->st_blocks  = stat.st_blocks;
-	buf->st_atime   = stat.st_atime;
-	buf->st_mtime   = stat.st_mtime;
-	buf->st_ctime   = stat.st_ctime;
+	buf->st_dev          = stat.st_dev;
+	buf->st_ino          = stat.st_ino;
+	buf->st_mode         = stat.st_mode;
+	buf->st_nlink        = stat.st_nlink;
+	buf->st_uid          = stat.st_uid;
+	buf->st_gid          = stat.st_gid;
+	buf->st_rdev         = stat.st_rdev;
+	buf->st_size         = stat.st_size;
+	buf->st_blksize      = stat.st_blksize;
+	buf->st_blocks       = stat.st_blocks;
+	buf->st_atim.tv_sec  = stat.st_atime;
+	buf->st_atim.tv_nsec = stat.st_atime_nsec;
+	buf->st_mtim.tv_sec  = stat.st_mtime;
+	buf->st_mtim.tv_nsec = stat.st_mtime_nsec;
+	buf->st_ctim.tv_sec  = stat.st_ctime;
+	buf->st_ctim.tv_nsec = stat.st_ctime_nsec;
 	return ret;
 }
 #endif
