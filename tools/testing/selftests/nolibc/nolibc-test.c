@@ -1063,6 +1063,10 @@ int prepare(void)
 		}
 	}
 
+	/* try to mount /tmp if not mounted, if not mountable, use ramfs as tmpfs */
+	mkdir("/tmp", 0755);
+	mount("none", "/tmp", "tmpfs", 0, 0);
+
 	return 0;
 }
 
